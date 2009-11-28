@@ -7,6 +7,9 @@
  * 2 of the License.
  *
  */
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <errno.h>
 #include <fcntl.h>
@@ -20,7 +23,13 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/un.h>
+#ifdef HAVE_MYSQL_H
+#include <errmsg.h>
+#elif HAVE_MYSQL_MYSQL_H
 #include <mysql/errmsg.h>
+#else
+#error "missing mysql headers"
+#endif
 
 #include "mysac.h"
 

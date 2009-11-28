@@ -1,6 +1,6 @@
 #!/bin/sh
 
-#autoheader
+autoheader
 mkdir -p m4
 aclocal -I m4
 gprefix=`which glibtoolize 2>&1 >/dev/null`

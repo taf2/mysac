@@ -7,10 +7,19 @@
  * 2 of the License.
  *
  */
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 /* the order of theses headers and defines
  * is important */
+#ifdef HAVE_MYSQL_H
+#include <my_global.h>
+#elif HAVE_MYSQL_MYSQL_H
 #include <mysql/my_global.h>
+#else
+#error "missing mysql headers"
+#endif
 #undef _ISOC99_SOURCE
 #define _ISOC99_SOURCE
 #include <stdlib.h>

@@ -13,14 +13,25 @@
 #ifndef __MYSAC_H__
 #define __MYSAC_H__
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <stdlib.h>
 #include <stdarg.h>
 #include <time.h>
 #include <errno.h>
 #include <string.h>
 #include <sys/time.h>
+#ifdef HAVE_MYSQL_H
+#include <errmsg.h>
+#include <mysql.h>
+#elif HAVE_MYSQL_MYSQL_H
 #include <mysql/errmsg.h>
 #include <mysql/mysql.h>
+#else
+#error "missing mysql headers"
+#endif
 
 /* def imported from: linux-2.6.24/include/linux/stddef.h */
 #define mysac_offset_of(TYPE, MEMBER) ((size_t) &((TYPE *)0)->MEMBER)

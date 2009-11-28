@@ -7,14 +7,24 @@
  * 2 of the License.
  *
  */
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
 #include <stdarg.h>
+#ifdef HAVE_MYSQL_H
+#include <mysql.h>
+/*#include <my_global.h>*/
+#elif HAVE_MYSQL_MYSQL_H
 #include <mysql/mysql.h>
-#include <mysql/my_global.h>
+/*#include <mysql/my_global.h>*/
+#else
+#error "missing mysql headers"
+#endif
 
 #include "mysac_decode_field.h"
 #include "mysac_decode_row.h"
