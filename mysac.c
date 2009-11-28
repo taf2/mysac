@@ -283,8 +283,10 @@ int mysac_connect(MYSAC *mysac) {
 	 network connexion
 	***********************************************/
 	case MYSAC_START:
+    printf("mysac start\n");
 		err = mysac_socket_connect(mysac->addr, &mysac->fd);
 		if (err != 0) {
+      printf("err: %d\n", err);
 			mysac->qst = MYSAC_START;
 			mysac->errorcode = err;
 			return err;
@@ -296,6 +298,7 @@ int mysac_connect(MYSAC *mysac) {
 	 check network connexion
 	***********************************************/
 	case MYSAC_CONN_CHECK:
+    printf("mysac conn check\n");
 		err = mysac_socket_connect_check(mysac->fd);
 		if (err != 0) {
 			close(mysac->fd);
@@ -313,6 +316,7 @@ int mysac_connect(MYSAC *mysac) {
 	 read greatings
 	***********************************************/
 	case MYSAC_READ_GREATINGS:
+    printf("mysac read greatings\n");
 
 		err = my_response(mysac);
 
@@ -438,6 +442,7 @@ int mysac_connect(MYSAC *mysac) {
 	 send paquet
 	***********************************************/
 	case MYSAC_SEND_AUTH_1:
+    printf("mysac send auth_1\n");
 		err = mysac_write(mysac->fd, mysac->send, mysac->len, &errcode);
 
 		if (err == -1)
@@ -458,6 +463,7 @@ int mysac_connect(MYSAC *mysac) {
 	***********************************************/
 	case_MYSAC_RECV_AUTH_1:
 	case MYSAC_RECV_AUTH_1:
+    printf("mysac recv auth_1\n");
 	/*
 		MYSAC_RET_EOF,
 		MYSAC_RET_OK,
@@ -510,6 +516,7 @@ int mysac_connect(MYSAC *mysac) {
 
 	/* send scrambled password in old format */
 	case MYSAC_SEND_AUTH_2:
+    printf("mysac send auth_2\n");
 		err = mysac_write(mysac->fd, mysac->send, mysac->len, &errcode);
 
 		if (err == -1)

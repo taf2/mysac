@@ -14,9 +14,9 @@
 /* the order of theses headers and defines
  * is important */
 #ifdef HAVE_MYSQL_H
-#include <my_global.h>
+#include <mysql.h>
 #elif HAVE_MYSQL_MYSQL_H
-#include <mysql/my_global.h>
+#include <mysql/mysql.h>
 #else
 #error "missing mysql headers"
 #endif

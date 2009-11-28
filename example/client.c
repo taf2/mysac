@@ -9,7 +9,7 @@ char buf[BUFS];
 char res[BUFS];
 char _q[BUFS];
 
-static inline int wait(fd, code) {
+static inline int client_wait(fd, code) {
 	fd_set fds;
 
 	FD_ZERO(&fds);
@@ -47,10 +47,10 @@ int main(int argc, char *argv[]) {
 	int fd;
 	MYSAC my;
 	MYSAC_RES *r;
-	const char *host;
-	const char *login;
-	const char *pass;
-	const char *db;
+	const char *host = NULL;
+	const char *login = NULL;
+	const char *pass = NULL;
+	const char *db = NULL;
 
 	/* check */
 	if (argc != 10)
@@ -62,7 +62,7 @@ int main(int argc, char *argv[]) {
 			i++;
 			host = argv[i];
 		}
-		else if (strcmp(argv[i], "-l")==0) {
+		else if (strcmp(argv[i], "-u")==0) {
 			i++;
 			login = argv[i];
 		}
@@ -82,13 +82,15 @@ int main(int argc, char *argv[]) {
 	/* get file descriptor */
 	fd = mysac_get_fd(&my);
 
+  if (!pass) { printf("no pass\n"); pass = ""; }
+
 	/* init connection */
 	mysac_setup(&my, host, login, pass, db, 0);
-	while (1) {
+  printf("login {host: %s, login: %s, pass: %s, db: %s}\n", host, login, pass, db);
+	do {
 		ret_code = mysac_connect(&my);
-		if (!wait(fd, ret_code))
-			break;
-	}
+  } while (client_wait(fd, ret_code));
+
 	if (ret_code != 0) {
 		fprintf(stderr, "mysac_connect error %d: %s\n", ret_code, mysac_advance_error(&my));
 		exit(1);
@@ -96,11 +98,10 @@ int main(int argc, char *argv[]) {
 
 	/* choose database */
 	mysac_set_database(&my, db);
-	while (1) {
+	do {
 		ret_code = mysac_send_database(&my);
-		if (!wait(fd, ret_code))
-			break;
-	}
+  } while (client_wait(fd, ret_code));
+
 	if (ret_code != 0) {
 		fprintf(stderr, "mysac_send_database error %d: %s\n", ret_code, mysac_advance_error(&my));
 		exit(1);
@@ -111,11 +112,9 @@ int main(int argc, char *argv[]) {
 	mysac_set_query(&my, r, "RESET QUERY CACHE;");
 
 	/* send query to database */
-	while (1) {
+	do {
 		ret_code = mysac_send_query(&my);
-		if (!wait(fd, ret_code))
-			break;
-	}
+  } while (client_wait(fd, ret_code));
 
 	/* la reponse est arrivée */
 	if (ret_code != 0) {
@@ -142,11 +141,9 @@ int main(int argc, char *argv[]) {
 	gettimeofday(&start, NULL);
 
 	/* send query to database */
-	while (1) {
+	do {
 		ret_code = mysac_send_query(&my);
-		if (!wait(fd, ret_code))
-			break;
-	}
+  } while (client_wait(fd, ret_code));
 
 	/* la reponse est arrivée */
 	if (ret_code != 0) {

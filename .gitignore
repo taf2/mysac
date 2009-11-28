@@ -28,3 +28,5 @@ stamp-h1
 .libs/
 config.h
 config.h.in
+example/client
+example/client-client.o

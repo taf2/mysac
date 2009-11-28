@@ -33,4 +33,4 @@ LDFLAGS="$old_ldflags"
 
 AC_PROG_INSTALL
 AC_PROG_LIBTOOL
-AC_OUTPUT(Makefile)
+AC_OUTPUT(Makefile example/Makefile)
