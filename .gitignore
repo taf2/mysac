@@ -32,6 +32,6 @@ example/client
 example/client-client.o
 config.h.in~
 example/Makefile
-COPYING
 INSTALL
 Makefile
+compile
