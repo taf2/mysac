@@ -16,15 +16,8 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdarg.h>
-#ifdef HAVE_MYSQL_H
-#include <mysql.h>
-/*#include <my_global.h>*/
-#elif HAVE_MYSQL_MYSQL_H
-#include <mysql/mysql.h>
-/*#include <mysql/my_global.h>*/
-#else
-#error "missing mysql headers"
-#endif
+
+#include "mysac_mysql.h"
 
 #include "mysac_decode_field.h"
 #include "mysac_decode_row.h"
@@ -533,6 +526,11 @@ int mysac_connect(MYSAC *mysac) {
 		mysac->read_len = mysac->bufsize;
 		goto case_MYSAC_RECV_AUTH_1;
 		
+	default:
+    /* TODO: more types or error? */
+    /*mysac->errorcode = MYERR_UNEXPECT_R_STATE;
+    return MYSAC_RET_ERROR;*/
+    break;
 	}
 
 	return 0;
@@ -540,7 +538,6 @@ int mysac_connect(MYSAC *mysac) {
 
 int mysac_set_database(MYSAC *mysac, const char *database) {
 	int i;
-	int len;
 
 	/* set packet number */
 	mysac->buf[3] = 0;
@@ -611,7 +608,13 @@ int mysac_send_database(MYSAC *mysac) {
 			mysac->errorcode = MYERR_PROTOCOL_ERROR;
 			return mysac->errorcode;
 		}
+	default:
+    /* TODO: more types or error? */
+    /*mysac->errorcode = MYERR_UNEXPECT_R_STATE;
+    return MYSAC_RET_ERROR;*/
+    break;
 	}
+  return MYSAC_RET_ERROR;
 }
 
 int mysac_set_stmt_prepare(MYSAC *mysac, const char *fmt, ...) {
@@ -759,14 +762,18 @@ int mysac_send_stmt_prepare(MYSAC *mysac, unsigned long *stmt_id) {
 		}
 
 		return 0;
+	default:
+    /* TODO: more types or error? */
+    /*mysac->errorcode = MYERR_UNEXPECT_R_STATE;
+    return MYSAC_RET_ERROR;*/
+    break;
 	}
+  return MYSAC_RET_ERROR;
 }
 
 
 
 int mysac_set_stmt_execute(MYSAC *mysac, MYSAC_RES *res, unsigned long stmt_id) {
-	va_list ap;
-	int len;
 
 	/* set packet number */
 	mysac->buf[3] = 0;
@@ -856,17 +863,13 @@ int mysac_set_query(MYSAC *mysac, MYSAC_RES *res, const char *fmt, ...) {
 	va_list ap;
 
 	va_start(ap, fmt);
-	mysac_v_set_query(mysac, res, fmt, ap);
+	return mysac_v_set_query(mysac, res, fmt, ap);
 }
 
 int mysac_send_query(MYSAC *mysac) {
 	int err;
 	int errcode;
-	int i, j;
-	unsigned long size;
-	char nul;
-	int use_stmt_fmt;
-	char c;
+	int i;
 	int len;
 	MYSAC_RES *res;
 
@@ -1075,6 +1078,11 @@ int mysac_send_query(MYSAC *mysac) {
 			mysac->read += sizeof(struct tm);
 			mysac->read_len -= sizeof(struct tm);
 			memset(mysac->res->cr->data[i].tm, 0, sizeof(struct tm));
+    default:
+      /* TODO: more types or error? */
+      /*mysac->errorcode = MYERR_UNEXPECT_R_STATE;
+      return MYSAC_RET_ERROR;*/
+      break;
 		}
 	}
 
@@ -1154,6 +1162,14 @@ int mysac_send_query(MYSAC *mysac) {
 		/* next line */
 		mysac->res->nb_lines++;
 		goto case_MYSAC_RECV_QUERY_DATA;
+	default:
+    /* TODO: more types or error? */
+    /*mysac->errorcode = MYERR_UNEXPECT_R_STATE;
+    return MYSAC_RET_ERROR;*/
+    break;
 	}
+
+  /* XXX: return a value? */
+  return MYSAC_RET_ERROR;
 }
 
