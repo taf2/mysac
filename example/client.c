@@ -53,8 +53,10 @@ int main(int argc, char *argv[]) {
 	const char *db = NULL;
 
 	/* check */
+  /*printf("argc: %d\n", argc);
 	if (argc != 10)
 		usage(argv[0]);
+    */
 
 	/* read cmd line */
 	for (i=1; i<argc; i++) {
