@@ -730,7 +730,7 @@ int mysac_send_stmt_prepare(MYSAC *mysac, unsigned long *stmt_id) {
 		/* TODO ... un peu pourri */
 		mysac->read_id++;
 		/* if (mysac->read_id < mysac->nb_cols) */
-		if (mysac->read_id < (int)mysac->res)
+		if (mysac->read_id < (long)mysac->res)
 			goto case_MYSAC_RECV_QUERY_COLDESC_2;
 		
 		mysac->readst = 0;
