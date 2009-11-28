@@ -22,8 +22,6 @@
 #ifdef HAVE_MYSQL_H
 #include <mysql.h>
 #include <errmsg.h>
-#include <my_global.h>
-#include <m_string.h>
 #elif HAVE_MYSQL_MYSQL_H
 #include <mysql/mysql.h>
 #include <mysql/errmsg.h>
