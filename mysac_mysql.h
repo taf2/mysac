@@ -23,10 +23,12 @@
 #include <mysql.h>
 #include <errmsg.h>
 #elif HAVE_MYSQL_MYSQL_H
-#include <mysql/mysql.h>
-#include <mysql/errmsg.h>
+
+
 #include <mysql/my_global.h>
 #include <mysql/m_string.h>
+#include <mysql/mysql.h>
+#include <mysql/errmsg.h>
 #else
 #error "missing mysql headers"
 #endif

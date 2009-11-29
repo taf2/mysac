@@ -24,6 +24,11 @@
 #include "mysac.h"
 #include "mysac_utils.h"
 
+ssize_t mysac_read(int fd, void *buf, size_t count, int *err);
+ssize_t mysac_write(int fd, const void *buf, size_t len, int *err);
+int mysac_socket_connect(const char *socket_name, int *fd);
+int mysac_socket_connect_check(int fd);
+
 enum my_response_t {
 	MYSAC_RET_EOF = 1000,
 	MYSAC_RET_OK,

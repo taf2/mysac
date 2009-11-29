@@ -12,3 +12,7 @@ fi
 autoconf
 #gtkdocize
 automake --force --add-missing
+#./configure $*
+
+#sed -e 's/#define PACKAGE_/#define MYSAC_PACKAGE_/' < config.h > config.h.sed && mv config.h.sed config.h
+#sed -e 's/#define PACKAGE /#define MYSAC_PACKAGE /' < config.h > config.h.sed && mv config.h.sed config.h

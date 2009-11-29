@@ -45,12 +45,9 @@ int mysac_decode_binary_row(char *buf, int packet_len,
 	int j;
 	int i;
 	char nul;
-	int year, month, day, hour, minut, second;
 	unsigned long len;
 	int tmp_len;
-	unsigned char *packet;
 	char *wh;
-	uint32_t days;
 	char _null_ptr[16];
 	char *null_ptr;
 	unsigned char bit;

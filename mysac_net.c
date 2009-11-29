@@ -33,7 +33,7 @@
 
 #include "mysac.h"
 
-int mysac_socket_connect(char *socket_name, int *fd) {
+int mysac_socket_connect(const char *socket_name, int *fd) {
 	int ret_code;
 	int listen_socket;
 	int conf_socket_type = -1;
